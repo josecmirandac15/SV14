@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pregunta Importante :O</title>
     <style>
-        /* Estilos generales para que se vea moderno */
         body {
             display: flex;
             flex-direction: column;
@@ -14,37 +13,27 @@
             height: 100vh;
             margin: 0;
             background: radial-gradient(circle, #fff0f3 0%, #ffccd5 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden; /* Evita que salgan barras de scroll si el botón huye */
             text-align: center;
         }
 
-        h1 {
-            color: #d63384;
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-        }
+        h1 { color: #d63384; padding: 0 20px; }
 
         .gif-container img {
-            width: 200px;
+            width: 180px;
             margin-bottom: 20px;
             border-radius: 20px;
         }
 
-        /* Contenedor de botones para que no se desordenen al inicio */
         .buttons {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 20px;
-            height: 200px; /* Espacio para que el Sí crezca */
+            width: 100%;
+            height: 300px; /* Espacio de maniobra */
+            position: relative;
         }
 
         button {
@@ -55,19 +44,20 @@
             border: none;
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.2s ease;
+            transition: transform 0.2s; /* Suaviza el crecimiento del SI */
         }
 
         #btnSi {
             background-color: #ff4d6d;
             color: white;
-            z-index: 10; /* Siempre encima */
+            z-index: 100; /* Asegura que siempre esté arriba */
         }
 
         #btnNo {
             background-color: #8a8a8a;
             color: white;
-            position: absolute; /* Para que pueda saltar por toda la pantalla */
+            position: absolute; /* CLAVE: Esto permite que se mueva */
+            transition: 0.1s; /* Para que el salto sea rápido */
         }
     </style>
 </head>
@@ -77,46 +67,54 @@
         <img src="https://media1.tenor.com/m/JZcTfM6gGKoAAAAC/minion-black.gif" alt="Bubu Dudu">
     </div>
 
-    <h1>¿Quieres ser mi San Valentín este 2026? :D</h1>
+    <h1>¿Quieres ser mi San Valentín este 2026? 🌹</h1>
 
-    <div class="container">
-        <div class="buttons">
-            <button id="btnSi">¡SÍ! :3</button>
-            <button id="btnNo">No :c</button>
-        </div>
+    <div class="buttons">
+        <button id="btnSi">¡SÍ! :3</button>
+        <button id="btnNo">No :c</button>
     </div>
 
     <script>
         const btnNo = document.getElementById('btnNo');
         const btnSi = document.getElementById('btnSi');
-        let fontSize = 1.2; // Tamaño inicial en rem
+        let escala = 1; 
 
-        // 1. El botón NO se escapa
-        btnNo.addEventListener('mouseover', () => {
-            // Calcular posiciones aleatorias dentro del ancho y alto de la ventana
-            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
-            
-            btnNo.style.left = `${x}px`;
-            btnNo.style.top = `${y}px`;
+        // Función para mover el botón NO
+        const moverBotonNo = () => {
+            // Calculamos límites para que no se salga de la pantalla visible
+            const padding = 50;
+            const maxX = window.innerWidth - btnNo.offsetWidth - padding;
+            const maxY = window.innerHeight - btnNo.offsetHeight - padding;
 
-            // 2. El botón SÍ crece cada vez que el mouse toca el NO
-            fontSize += 0.3; 
-            btnSi.style.fontSize = `${fontSize}rem`;
-            btnSi.style.padding = `${15 + (fontSize * 5)}px ${30 + (fontSize * 10)}px`;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            btnNo.style.left = `${randomX}px`;
+            btnNo.style.top = `${randomY}px`;
+
+            // Hacer que el botón SÍ crezca
+            escala += 0.25;
+            btnSi.style.transform = `scale(${escala})`;
+        };
+
+        // Evento para PC (Mouse)
+        btnNo.addEventListener('mouseover', moverBotonNo);
+        
+        // Evento para Celulares (Touch)
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Evita que se haga click accidentalmente
+            moverBotonNo();
         });
 
-        // 3. Acción al clickear el SÍ
+        // Evento cuando por fin clickean el SÍ
         btnSi.addEventListener('click', () => {
-            // Cambiar el contenido por un mensaje final
             document.body.innerHTML = `
-                <div style="text-align:center;">
-                    <img src="https://media1.tenor.com/m/l8OlCfng1zIAAAAd/i-love-u.gif" width="300">
-                    <h1 style="color: #ff4d6d;">¡Nos vemos el sabado mi amolcito :3</h1>
-                    <p style="font-size: 1.5rem;">Nos vemos el 14, prepárate para una sorpresa.</p>
+                <div style="padding: 20px;">
+                    <img src="https://media1.tenor.com/m/l8OlCfng1zIAAAAd/i-love-u.gif" width="250">
+                    <h1 style="color: #ff4d6d;">¡Nos Vemos el Sabado Amolcito :3</h1>
+                    <p style="font-size: 1.5rem;">Te Amo.</p>
                 </div>
             `;
-            // Opcional: lanzar confeti si agregas una librería externa
         });
     </script>
 </body>
