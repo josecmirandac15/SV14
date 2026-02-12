@@ -3,61 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pregunta Importante :O</title>
+    <title>Para Ti :3</title>
     <style>
         body {
+            margin: 0;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
             background: radial-gradient(circle, #fff0f3 0%, #ffccd5 100%);
-            font-family: 'Segoe UI', sans-serif;
-            overflow: hidden; /* Evita que salgan barras de scroll si el botón huye */
-            text-align: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
         }
-
-        h1 { color: #d63384; padding: 0 20px; }
 
         .gif-container img {
             width: 180px;
-            margin-bottom: 20px;
             border-radius: 20px;
+            margin-bottom: 20px;
         }
 
-        .buttons {
+        h1 { color: #d63384; margin-bottom: 30px; text-align: center; padding: 0 10px; }
+
+        /* Contenedor relativo para que los botones tengan un punto de referencia */
+        .contenedor-botones {
             display: flex;
-            justify-content: center;
+            gap: 50px;
             align-items: center;
-            gap: 20px;
+            justify-content: center;
             width: 100%;
-            height: 300px; /* Espacio de maniobra */
-            position: relative;
+            height: 100px;
         }
 
         button {
             padding: 15px 30px;
             font-size: 1.2rem;
             font-weight: bold;
-            cursor: pointer;
             border: none;
             border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: transform 0.2s; /* Suaviza el crecimiento del SI */
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         #btnSi {
             background-color: #ff4d6d;
             color: white;
-            z-index: 100; /* Asegura que siempre esté arriba */
+            transition: transform 0.2s ease;
+            z-index: 999; /* Siempre al frente */
         }
 
         #btnNo {
             background-color: #8a8a8a;
             color: white;
-            position: absolute; /* CLAVE: Esto permite que se mueva */
-            transition: 0.1s; /* Para que el salto sea rápido */
+            position: relative; /* Cambiado a relative para que aparezca en el flujo normal al inicio */
+            z-index: 10;
         }
     </style>
 </head>
@@ -69,53 +68,54 @@
 
     <h1>¿Quieres ser mi San Valentín este 2026? 🌹</h1>
 
-    <div class="buttons">
+    <div class="contenedor-botones">
         <button id="btnSi">¡SÍ! :3</button>
-        <button id="btnNo">No :c</button>
+        <button id="btnNo">No </button>
     </div>
 
     <script>
         const btnNo = document.getElementById('btnNo');
         const btnSi = document.getElementById('btnSi');
-        let escala = 1; 
+        let escala = 1;
 
-        // Función para mover el botón NO
-        const moverBotonNo = () => {
-            // Calculamos límites para que no se salga de la pantalla visible
-            const padding = 50;
-            const maxX = window.innerWidth - btnNo.offsetWidth - padding;
-            const maxY = window.innerHeight - btnNo.offsetHeight - padding;
+        const huir = () => {
+            // En el primer movimiento, lo cambiamos a absolute para que pueda volar por toda la pantalla
+            if (btnNo.style.position !== 'absolute') {
+                btnNo.style.position = 'absolute';
+            }
 
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
+            // Calculamos posiciones aleatorias seguras
+            const anchoVentana = window.innerWidth;
+            const altoVentana = window.innerHeight;
+            
+            const randomX = Math.random() * (anchoVentana - btnNo.offsetWidth);
+            const randomY = Math.random() * (altoVentana - btnNo.offsetHeight);
 
             btnNo.style.left = `${randomX}px`;
             btnNo.style.top = `${randomY}px`;
 
-            // Hacer que el botón SÍ crezca
-            escala += 0.25;
+            // Hacer crecer el botón SÍ
+            escala += 0.3;
             btnSi.style.transform = `scale(${escala})`;
         };
 
-        // Evento para PC (Mouse)
-        btnNo.addEventListener('mouseover', moverBotonNo);
-        
-        // Evento para Celulares (Touch)
+        // Eventos
+        btnNo.addEventListener('mouseover', huir);
         btnNo.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Evita que se haga click accidentalmente
-            moverBotonNo();
+            e.preventDefault(); // Evita el click en movil
+            huir();
         });
 
-        // Evento cuando por fin clickean el SÍ
         btnSi.addEventListener('click', () => {
             document.body.innerHTML = `
-                <div style="padding: 20px;">
+                <div style="text-align: center;">
                     <img src="https://media1.tenor.com/m/l8OlCfng1zIAAAAd/i-love-u.gif" width="250">
-                    <h1 style="color: #ff4d6d;">¡Nos Vemos el Sabado Amolcito :3</h1>
-                    <p style="font-size: 1.5rem;">Te Amo.</p>
+                    <h1 style="color: #ff4d6d;">¡Que crack, Nos vemos el sabado</h1>
+                    <p style="font-size: 1.5rem;">Te Amo mai lov.</p>
                 </div>
             `;
         });
     </script>
 </body>
 </html>
+
